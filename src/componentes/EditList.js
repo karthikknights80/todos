@@ -1,12 +1,22 @@
 import React, { useState } from "react";
-import "./../App.css";
 import { Button } from "react-bootstrap";
-const EditList = ({ item, idx, todo, setEditing }) => {
+
+const EditList = ({ x, settodo, todo }) => {
   const [editedTodo, seteditedTodo] = useState("");
+  const doneHandler = (i) => {
+    const updatedTodo = todo.map((y) => {
+      if (y.idx === i) {
+        y.editOption = false;
+        y.item = editedTodo;
+      }
+      return y;
+    });
+    settodo(updatedTodo);
+  };
   return (
-    <div key={idx} className="todoItems rounded">
+    <>
       <input
-        placeholder={item}
+        placeholder={x.item}
         onChange={(e) => {
           seteditedTodo(e.target.value);
         }}
@@ -16,16 +26,21 @@ const EditList = ({ item, idx, todo, setEditing }) => {
           variant="success"
           className="mx-3"
           onClick={() => {
-            todo[idx].item = editedTodo;
-            todo[idx].editoption = false;
-            setEditing(false);
+            doneHandler(x.idx);
           }}
         >
-          done
+          Done
         </Button>
-        <Button variant="danger">Cancle</Button>
+        {/* <Button
+                        variant="danger"
+                        onClick={() => {
+                          deleteHandler(x.idx);
+                        }}
+                      >
+                        Delete
+                      </Button> */}
       </div>
-    </div>
+    </>
   );
 };
 

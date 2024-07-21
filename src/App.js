@@ -1,8 +1,10 @@
 import "./App.css";
 import { useState } from "react";
 import { Button, Form, Container } from "react-bootstrap";
+import EditList from "./componentes/EditList";
+import TodoList from "./componentes/Todoitem";
 function App() {
-  const [todoitem, settodoitem] = useState({});
+  const [todoitem, settodoitem] = useState("");
   const [todo, settodo] = useState([]);
 
   const submitHandler = (e) => {
@@ -14,11 +16,7 @@ function App() {
     settodo(todoList);
     console.log(todo);
   };
-  const deleteHandler = (i) => {
-    console.log(i, todo);
-    const updatedTodo = todo.filter((x) => x.idx !== i);
-    settodo(updatedTodo);
-  };
+
   return (
     <div className="App my-5">
       <Container>
@@ -39,20 +37,11 @@ function App() {
           {todo.map((x, i) => {
             return (
               <div key={i} className="todoItems rounded">
-                <li className="my-2 rounded p-2 ">{x.item}</li>
-                <div className="d-flex p-2">
-                  <Button variant="success" className="mx-3">
-                    Edit
-                  </Button>
-                  <Button
-                    variant="danger"
-                    onClick={() => {
-                      deleteHandler(x.idx);
-                    }}
-                  >
-                    Delete
-                  </Button>
-                </div>
+                {x.editOption ? (
+                  <EditList x={x} settodo={settodo} todo={todo} />
+                ) : (
+                  <TodoList x={x} todo={todo} settodo={settodo} />
+                )}
               </div>
             );
           })}
